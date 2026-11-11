@@ -27,7 +27,7 @@ The example user in the project brief is Jennifer, an insured patient who cannot
 4. Copy or print the summary, or choose another issue.
 
 The app always shows its safety disclaimer. Larger text is available for readability.
-Ask Rxplain accepts one short message at a time, up to 500 characters. It can classify a clear issue or abstain; it does not generate medical answers or answer unrelated questions.
+Ask Rxplain accepts one short message at a time, up to 500 characters. For a clear match, it names the issue and tells the user to select it and choose “Explain this” for the full guide. It can also abstain; it does not generate medical answers or answer unrelated questions.
 
 ## Privacy and safety
 

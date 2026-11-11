@@ -27,6 +27,7 @@ The example user is Jennifer, an insured patient who cannot pick up a prescripti
 - Ask Rxplain accepts 1–500 characters and returns a message of no more than 500 characters.
 - Ask Rxplain uses Gemini only to classify a clear match among the five supported issues, an unclear issue, or an out-of-scope message.
 - A matched Ask Rxplain response must be high confidence; all contact recommendations come from reviewed server-side guidance.
+- A matched reply names the issue and tells the user to select that issue and choose “Explain this” to open the full guide.
 - The Ask Rxplain reply is fixed server-generated routing text, not a free-form AI answer.
 - Always display that AI can be wrong, plans differ, and the answer is general information.
 - Provide a prewritten fallback for every issue if Gemini is unavailable or returns invalid output.

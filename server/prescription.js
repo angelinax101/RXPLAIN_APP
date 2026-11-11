@@ -157,12 +157,12 @@ async function classifyAskMessage(message) {
   return parsed.data;
 }
 
-function matchedAskReply(issueId, mayRunOut) {
+export function matchedAskReply(issueId, mayRunOut) {
   const issue = byId.get(issueId);
   if (!issue) return uncertainAskReply(mayRunOut, 'fallback');
   const contact = issue.fallback.contact;
   const message = [
-    `This sounds like ${issue.title.toLowerCase()}.`,
+    `This may match ${issue.title}. To read the full explanation, close Ask Rxplain, select “${issue.title}” from the issue list, then choose “Explain this.”`,
     `Contact ${contactLabel[contact.team]} first. ${contact.reason}`,
     mayRunOut ? 'If you may run out, ask your pharmacist what options exist; rules vary by plan and state.' : 'Ask them to confirm the exact reason and your next step.',
   ].join(' ');

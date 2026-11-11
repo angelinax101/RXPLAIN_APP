@@ -16,6 +16,7 @@ const {
   askRxplain,
   explainIssue,
   listPublicIssues,
+  matchedAskReply,
   redactSensitiveDetails,
 } = await import('../server/prescription.js');
 
@@ -172,6 +173,14 @@ test('routing output schema only allows a confident known issue match', () => {
     confidence: 'high',
     answer: 'Take a different dose.',
   }).success, false);
+});
+
+test('matched Ask reply names the issue and explains how to open its full guide', () => {
+  const answer = matchedAskReply('unexpected-copay', false);
+  assert.equal(answer.status, 'matched');
+  assert.equal(answer.issueTitle, 'Unexpected copay');
+  assert.match(answer.message, /select “Unexpected copay” from the issue list, then choose “Explain this\.”/);
+  assert.equal(AskReplySchema.safeParse(answer).success, true);
 });
 
 test('obvious contact details and identifiers are redacted before AI classification', () => {
