@@ -23,6 +23,7 @@ The example user is Jennifer, an insured patient who cannot pick up a prescripti
 - Support exactly five issue IDs: refill too soon, prior authorization, non-formulary drug, unexpected copay, and insurance rejection.
 - Use plain language at about a sixth-grade reading level.
 - Return structured data: `explanation`, `contact.team`, `contact.reason`, three `nextSteps`, and one to three `questions`.
+- Use patient-facing questions from the reviewed reference notes; Gemini must not generate or rewrite the questions.
 - Ask Rxplain accepts 1–500 characters and returns a message of no more than 500 characters.
 - Ask Rxplain uses Gemini only to classify a clear match among the five supported issues, an unclear issue, or an out-of-scope message.
 - A matched Ask Rxplain response must be high confidence; all contact recommendations come from reviewed server-side guidance.

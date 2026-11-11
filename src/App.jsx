@@ -267,7 +267,7 @@ export default function App() {
                 </section>
                 {(answer.questions || []).length > 0 && (
                   <section className="answer-block">
-                    <h3>Questions you could ask</h3>
+                    <h3>Questions to ask your pharmacy, prescriber, or insurer</h3>
                     <ul className="questions-list">
                       {answer.questions.slice(0, 3).map((question, index) => <li key={`${index}-${question}`}>{question}</li>)}
                     </ul>

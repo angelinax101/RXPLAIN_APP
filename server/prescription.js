@@ -14,7 +14,6 @@ export const ISSUE_IDS = ISSUE_GUIDES.map((issue) => issue.id);
 export const ExplanationSchema = z.object({
   explanation: z.string().trim().min(20).max(600),
   nextSteps: z.array(z.string().trim().min(5).max(200)).length(3),
-  questions: z.array(z.string().trim().min(5).max(200)).min(1).max(3),
 }).strict();
 
 export const ExplainRequest = z.object({
@@ -102,6 +101,12 @@ export function applyContactGuidance(issueId, answer) {
   const issue = byId.get(issueId);
   if (!issue) throw new Error('Unknown prescription issue.');
   return { ...answer, contact: issue.fallback.contact };
+}
+
+export function applyReviewedQuestions(issueId, answer) {
+  const issue = byId.get(issueId);
+  if (!issue) throw new Error('Unknown prescription issue.');
+  return { ...answer, questions: [...issue.fallback.questions] };
 }
 
 export async function askRxplain(message) {
@@ -226,7 +231,7 @@ async function generateWithGemini(issue) {
       'Never recommend a specific medicine, coupon, discount card, or pharmacy as cheaper or allowed.',
       `The first contact is ${issue.fallback.contact.team}. Make the first next step align with that contact; do not name a different first contact.`,
       'Use only the supplied issue and reference notes. If they do not support a detail, leave it out.',
-      'Return only a JSON object with explanation, nextSteps (exactly 3 strings), and questions (1 to 3 strings). Do not include a contact field.',
+      'Return only a JSON object with explanation and nextSteps (exactly 3 strings). Do not include contact or questions; the application supplies reviewed contact guidance and patient-facing questions.',
     ].join(' ')),
     new HumanMessage(JSON.stringify({
       issue: issue.title,
@@ -237,7 +242,7 @@ async function generateWithGemini(issue) {
 
   const parsed = ExplanationSchema.safeParse(JSON.parse(textOf(response)));
   if (!parsed.success) throw new Error('The AI response did not match the required format.');
-  return applyContactGuidance(issue.id, parsed.data);
+   return applyReviewedQuestions(issue.id, applyContactGuidance(issue.id, parsed.data));
 }
 
 function textOf(response) {

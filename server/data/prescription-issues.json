@@ -16,9 +16,9 @@
         "If you may run out, ask the pharmacist what options exist. If directions changed, ask whether the prescriber needs to send an updated prescription."
       ],
       "questions": [
-        "What date will my plan allow this refill?",
-        "Is there an early-refill or travel exception process?",
-        "What options exist if I may run out?"
+        "What date will my refill be approved?",
+        "Is there an early-refill or vacation override on my plan?",
+        "If my directions changed, do you need a new prescription from my doctor?"
       ]
     }
   },
@@ -39,9 +39,9 @@
         "Contact your insurer to check the request's status and typical review time."
       ],
       "questions": [
-        "Has the prior-authorization request been sent to my plan?",
-        "How can I check its status and typical review time?",
-        "If it is denied, how can I ask about a review or appeal?"
+        "Has the prior authorization been submitted, and on what date?",
+        "What information does the insurer still need from the prescriber's office?",
+        "If it's denied, how do I appeal, or is there a covered alternative?"
       ]
     }
   },
@@ -62,8 +62,9 @@
         "If you are considering a treatment change, speak with your prescriber."
       ],
       "questions": [
-        "Is this prescription excluded or in a higher cost tier?",
-        "Is there a formulary exception process?"
+        "Is this prescription excluded, or just in a higher cost tier?",
+        "Which covered medications are alternatives, and can my doctor consider them?",
+        "Is there a formulary exception process, and what does it require?"
       ]
     }
   },
@@ -84,9 +85,9 @@
         "Ask whether the pharmacy is preferred or in-network. For treatment options, speak with your prescriber."
       ],
       "questions": [
-        "What was billed, and why is my share this amount?",
-        "Have I met my deductible, and is this a preferred pharmacy?",
-        "Are there restrictions on any discount or coupon I could use?"
+        "What was billed, what did insurance pay, and why is my share this amount?",
+        "Have I met my deductible?",
+        "Would a different pharmacy, mail-order option, or 90-day supply cost less?"
       ]
     }
   },
@@ -107,9 +108,9 @@
         "If the insurer says information is needed from the prescriber, ask the prescriber's office about the next step."
       ],
       "questions": [
-        "What does this rejection message mean?",
-        "Is my coverage active, and is this pharmacy in my plan's network?",
-        "Who needs to take the next step?"
+        "What exact message did the claim come back with?",
+        "Is the insurance information you have on file correct and current?",
+        "Is my coverage active, and is this pharmacy in my network?"
       ]
     }
   }

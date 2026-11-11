@@ -6,8 +6,10 @@ const {
   AskClassificationSchema,
   AskReplySchema,
   AskRequest,
+  ExplanationSchema,
   ExplainRequest,
   applyContactGuidance,
+  applyReviewedQuestions,
   askRxplain,
   explainIssue,
   listPublicIssues,
@@ -53,6 +55,28 @@ test('first-contact guidance stays fixed even if the AI suggests another contact
   });
   assert.equal(answer.contact.team, 'pharmacy');
   assert.match(answer.contact.reason, /itemized breakdown/i);
+});
+
+test('patient-facing question prompts always come from the reviewed reference list', () => {
+  const answer = applyReviewedQuestions('non-formulary', {
+    questions: ['Are you taking the medication as prescribed?'],
+  });
+  assert.deepEqual(answer.questions, [
+    'Is this prescription excluded, or just in a higher cost tier?',
+    'Which covered medications are alternatives, and can my doctor consider them?',
+    'Is there a formulary exception process, and what does it require?',
+  ]);
+  assert.ok(answer.questions.every((question) => question.endsWith('?')));
+  assert.ok(answer.questions.every((question) => !/^(are you|do you|have you)\b/i.test(question)));
+});
+
+test('Gemini output cannot include or invent patient-facing questions', () => {
+  const result = ExplanationSchema.safeParse({
+    explanation: 'This plan may require a prescriber request before deciding coverage.',
+    nextSteps: ['Ask the office if it was submitted.', 'Check with the insurer.', 'Confirm the pharmacy can fill it.'],
+    questions: ['Are you taking the medication already?'],
+  });
+  assert.equal(result.success, false);
 });
 
 test('Ask Rxplain accepts only a short message and rejects extra fields', () => {

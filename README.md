@@ -37,6 +37,7 @@ Ask Rxplain accepts one short message at a time, up to 500 characters. It can cl
 - Gemini returns only a strict classification, not a written answer. Rxplain uses reviewed issue guidance to choose a contact and construct fixed routing text.
 - `/api/explain` accepts only one of the five known issue IDs; `/api/ask` accepts one message of at most 500 characters. Both endpoints reject additional request fields.
 - The first contact for each issue comes from the reviewed guide, not a free-form AI choice.
+- The questions shown in a guide are reviewed prompts from the supplied reference notes; Gemini does not generate or rewrite them.
 - The AI must not give medication or treatment advice, ask for personal details, or promise coverage, prices, exceptions, or timelines.
 - Unclear messages receive a cautious pharmacy referral; medical and unrelated messages receive a scope-only response.
 - If someone may run out, the guide directs them to ask their pharmacist what options exist; rules vary by plan and state.
