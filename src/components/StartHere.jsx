@@ -1,13 +1,16 @@
-import { project, isTodo } from '../../shared/project.config.js';
-
-// A live checklist: it ticks itself as your team finishes setup.
+// A short guide to the features available in the Rxplain MVP.
 export default function StartHere({ health }) {
   const steps = [
-    { done: !isTodo(project.teamName) && !isTodo(project.problemStatement), text: 'Fill in your team and problem in shared/project.config.js' },
-    { done: health?.ai === 'live', text: 'Add GEMINI_API_KEY in Replit Secrets, then restart' },
-    { done: health?.database === 'postgres', text: 'Create a Postgres database in Replit (Tools > Database)' },
-    { done: false, text: 'Write your first Gherkin ticket in tickets/ (see docs/SPEC-DRIVEN-DEVELOPMENT.md)' },
-    { done: false, text: 'Replace the sample resources with real, verified ones' },
+    { done: true, text: 'Choose from five common prescription access issues' },
+    {
+      done: health?.ai === 'live',
+      text: health?.ai === 'live'
+        ? 'Gemini explanations are available; safe guides remain ready as a fallback'
+        : 'Safe prewritten guides are available; configure GEMINI_API_KEY for AI explanations',
+    },
+    { done: true, text: 'Review who to contact first, three next steps, and questions to ask' },
+    { done: true, text: 'Copy or print a guide, or choose larger text' },
+    { done: true, text: 'No account or personal, prescription, or insurance details are needed' },
   ];
   const finished = steps.filter((s) => s.done).length;
 

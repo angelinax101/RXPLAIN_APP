@@ -34,6 +34,7 @@ The app always shows its safety disclaimer. Larger text is available for readabi
 - No free-text field: the only information sent to Gemini is the selected issue and the related reference notes in `server/data/prescription-issues.json`.
 - Requests and answers are not saved to a database or logged by the application.
 - The API accepts only one of the five known issue IDs and rejects additional request fields.
+- The first contact for each issue comes from the reviewed guide, not a free-form AI choice.
 - The AI must not give medication or treatment advice, ask for personal details, or promise coverage, prices, exceptions, or timelines.
 - If someone may run out, the guide directs them to ask their pharmacist what options exist; rules vary by plan and state.
 - If Gemini is unavailable or returns an unusable answer, Rxplain shows a prewritten fallback for the selected issue.
@@ -112,7 +113,7 @@ The response contains:
   "nextSteps": ["Step one", "Step two", "Step three"],
   "questions": ["A question to ask"],
   "mode": "ai",
-   "disclaimer": "AI can be wrong. Plans differ. General information only."
+   "disclaimer": "AI can be wrong. Plans differ. Rxplain shares general information, not medical or insurance advice. Confirm details with your pharmacy, prescriber, or insurer. If you may run out, ask your pharmacist what options exist; rules vary by plan and state. Do not enter personal, prescription, or insurance details."
 }
 ```
 
@@ -129,6 +130,7 @@ server/data/prescription-issues.json
                              Five issues, server-only notes, and fallback answers
 shared/project.config.js     App name, tagline, and team
 tests/                       Automated tests
+tickets/                     Rxplain acceptance criteria and ticket template
 ```
 
 ## Scope

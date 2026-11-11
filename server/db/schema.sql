@@ -1,7 +1,7 @@
 -- =============================================================
--- Database tables. Safe to run many times (IF NOT EXISTS).
--- Runs automatically when the server starts, or with: npm run db:setup
--- Add your own tables at the bottom.
+-- Legacy schema from the original starter project.
+-- Rxplain does not use PostgreSQL, load this file, or call db/setup.js.
+-- Do not apply this schema for the Rxplain MVP.
 -- =============================================================
 
 -- Community resources the agent can search (food, health, youth programs...)
@@ -29,11 +29,3 @@ CREATE TABLE IF NOT EXISTS chat_logs (
 );
 
 CREATE INDEX IF NOT EXISTS resources_category_idx ON resources (category);
-
--- TODO (your team): add a table for your project here, for example:
--- CREATE TABLE IF NOT EXISTS volunteer_signups (
---   id SERIAL PRIMARY KEY,
---   first_name TEXT NOT NULL,
---   shift TEXT NOT NULL,
---   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
--- );

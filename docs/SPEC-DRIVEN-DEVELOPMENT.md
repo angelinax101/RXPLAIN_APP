@@ -190,13 +190,13 @@ Use a simple board with four columns (GitHub Projects, Trello, or sticky notes):
 Replit Agent is great at following clear tickets and bad at reading minds. Paste this, filled in:
 
 ```
-Read SPEC.md and tickets/004-save-favorites.md.
-Build ONLY that ticket. Follow every rule in SPEC.md Part A.
-Use the existing structure: React components in src/components, API routes in
-server/routes/api.js, database tables in server/db/schema.sql, validation with zod in
-server/validation.js.
-Do not change files that the ticket doesn't need.
-When you're done, list which scenario each change satisfies.
+Read README.md, SPEC.md, and the requested ticket in tickets/.
+Build ONLY that ticket. Follow the privacy and safety rules in SPEC.md.
+Use the current Rxplain structure: the main React interface is in src/App.jsx,
+the API client is in src/api.js, Express routes are in server/routes/api.js,
+and issue notes and fallback guides are in server/data/prescription-issues.json.
+Do not add free-text inputs or database storage unless the specification changes.
+Avoid unrelated files. When you're done, list which scenario each change satisfies.
 ```
 
 Then **you** test every scenario by hand. If one fails, paste the failing scenario back to Agent:
@@ -209,19 +209,22 @@ Then **you** test every scenario by hand. If one fails, paste the failing scenar
 
 ## 7. Step 4: Turn scenarios into tests
 
-Important scenarios deserve an automated test, so they stay true forever. Each `Given / When / Then`
-maps to three lines of a test. Compare this scenario with `tests/guardrail.test.js`:
+Important scenarios deserve an automated test, so they stay true over time. Each `Given / When / Then`
+maps to a test. Rxplain-specific validation is covered in `tests/prescription.test.js`:
 
 ```gherkin
-Scenario: Personal information is removed
-  When I send "Call me at 312-555-0199"
-  Then the message sent to the AI does not contain "312-555-0199"
+Scenario: Reject free-text personal information
+  When a request includes an issue ID and a personal message
+  Then the API rejects the request
 ```
 
 ```js
-test('removes phone numbers before the AI sees them', () => {
-  const out = run({ message: 'Call me at 312-555-0199' });  // When
-  assert.ok(!out.redacted.includes('555-0199'));             // Then
+test('only the five fixed issue IDs are accepted, with no extra user text', () => {
+  const result = ExplainRequest.safeParse({
+    issueId: 'unexpected-copay',
+    message: 'personal details',
+  });
+  assert.equal(result.success, false);
 });
 ```
 
@@ -229,12 +232,12 @@ Run all tests with `npm test`.
 
 ---
 
-## 8. Your first week, as tickets
+## 8. Rxplain tickets
 
-1. `001` Fill in `shared/project.config.js` and `SPEC.md` (S)
-2. `002` Replace the sample resources with 25 to 40 real, verified ones (M)
-3. `003` Rewrite the agent's voice and rules in `server/agent/agent.js` for your users (S)
-4. `004` Your first must-have feature from `SPEC.md` (M)
-5. `005` One new skill for your project in `skills/` (M)
+1. `001` Select a prescription access issue — Done
+2. `002` Show clear next steps — Done
+3. `003` Protect privacy and safety — Done
+4. `004` Add translated guides — Deferred until the team chooses target languages
 
-Copy `tickets/TEMPLATE.md` for each one. The `tickets/` folder has finished examples to model from.
+Use `tickets/TEMPLATE.md` for future work. The current implementation and its safety boundaries
+are defined in `README.md` and `SPEC.md`; do not reintroduce the original community-resource flow.

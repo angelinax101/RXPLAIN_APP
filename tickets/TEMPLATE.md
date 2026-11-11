@@ -1,45 +1,50 @@
-# NNN: Short ticket name
+# [Ticket number]: [Short title]
 
-**Status:** To Do | In Progress | Review | Done
-**Owner:** TODO
-**Size:** S | M | L (L means split it)
-**Spec link:** SPEC.md section __
+Replace each bracketed prompt with project-specific details before sharing the ticket.
+
+**Status:** Draft | Ready | In Progress | Review | Done | Deferred
+**Owner:** [Person or team responsible]
+**Size:** [S, M, or L; split large work into smaller tickets]
+**Spec link:** [SPEC.md section or heading]
 
 ## User story
-As a TODO
-I want TODO
-So that TODO
+
+As [a specific user],
+I want [a clear capability],
+so that [the user benefit].
 
 ## Acceptance criteria
 
 ```gherkin
-Feature: TODO
+Feature: [Feature name]
 
-  Scenario: The happy path
-    Given TODO
-    When TODO
-    Then TODO
+  Scenario: [Expected result]
+    Given [starting conditions]
+    When [user action]
+    Then [observable result]
 
-  Scenario: Something goes wrong
-    Given TODO
-    When TODO
-    Then TODO
+  Scenario: [Validation or failure case]
+    Given [starting conditions]
+    When [invalid or unavailable condition]
+    Then [safe, understandable result]
 
   Scenario: Safety and privacy
-    Given TODO
-    When TODO
-    Then TODO
+    Given [relevant user or app state]
+    When [the feature is used]
+    Then [privacy and safety requirements are met]
 ```
 
 ## Notes
-- Files to touch:
-- Skills used:
-- Database changes:
-- Out of scope for this ticket:
+
+- Files likely to change: [List only after reviewing the code]
+- Tests: [Relevant automated and manual checks]
+- Database changes: [None unless the specification requires them]
+- Out of scope: [Related work this ticket does not include]
 
 ## Definition of Done
+
 - [ ] Every scenario passes when a teammate walks through it
 - [ ] `npm test` passes
-- [ ] No keys or personal info in code or commits
-- [ ] Reviewed by a teammate
-- [ ] Merged to main and the Replit app still runs
+- [ ] No keys or personal information are added to code or commits
+- [ ] A teammate reviews the change
+- [ ] The app runs after the change is merged
