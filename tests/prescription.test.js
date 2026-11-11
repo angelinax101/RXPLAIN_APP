@@ -2,7 +2,17 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
 process.env.AI_MODE = 'mock';
-const { ExplainRequest, applyContactGuidance, explainIssue, listPublicIssues } = await import('../server/prescription.js');
+const {
+  AskClassificationSchema,
+  AskReplySchema,
+  AskRequest,
+  ExplainRequest,
+  applyContactGuidance,
+  askRxplain,
+  explainIssue,
+  listPublicIssues,
+  redactSensitiveDetails,
+} = await import('../server/prescription.js');
 
 test('only the five fixed issue IDs are accepted, with no extra user text', () => {
   const issues = listPublicIssues();
@@ -43,4 +53,61 @@ test('first-contact guidance stays fixed even if the AI suggests another contact
   });
   assert.equal(answer.contact.team, 'pharmacy');
   assert.match(answer.contact.reason, /itemized breakdown/i);
+});
+
+test('Ask Rxplain accepts only a short message and rejects extra fields', () => {
+  assert.equal(AskRequest.safeParse({ message: 'The pharmacy says my refill is too soon.' }).success, true);
+  assert.equal(AskRequest.safeParse({ message: 'x'.repeat(501) }).success, false);
+  assert.equal(AskRequest.safeParse({ message: '   ' }).success, false);
+  assert.equal(AskRequest.safeParse({ message: 'My copay changed.', issueId: 'unexpected-copay' }).success, false);
+});
+
+test('routing output schema only allows a confident known issue match', () => {
+  assert.equal(AskClassificationSchema.safeParse({
+    status: 'matched',
+    issueId: 'refill-too-soon',
+    confidence: 'high',
+  }).success, true);
+  assert.equal(AskClassificationSchema.safeParse({
+    status: 'matched',
+    issueId: 'unknown',
+    confidence: 'high',
+  }).success, false);
+  assert.equal(AskClassificationSchema.safeParse({
+    status: 'matched',
+    issueId: 'refill-too-soon',
+    confidence: 'low',
+  }).success, false);
+  assert.equal(AskClassificationSchema.safeParse({
+    status: 'unclear',
+    issueId: null,
+    confidence: 'low',
+  }).success, true);
+  assert.equal(AskClassificationSchema.safeParse({
+    status: 'matched',
+    issueId: 'refill-too-soon',
+    confidence: 'high',
+    answer: 'Take a different dose.',
+  }).success, false);
+});
+
+test('obvious contact details and identifiers are redacted before AI classification', () => {
+  const input = 'Email me@example.com, DOB 01/02/1990, phone 206-555-0123, member ID ABC-1234, SSN 123-45-6789.';
+  const redacted = redactSensitiveDetails(input);
+  assert.doesNotMatch(redacted, /me@example\.com|01\/02\/1990|206-555-0123|ABC-1234|123-45-6789/i);
+  assert.match(redacted, /\[email removed\]/);
+  assert.match(redacted, /\[phone removed\]/);
+  assert.match(redacted, /\[identifier removed\]/);
+});
+
+test('Ask Rxplain abstains safely when Gemini classification is unavailable', async () => {
+  const answer = await askRxplain('The pharmacy says my refill is too soon and I may run out today.');
+  assert.equal(answer.status, 'uncertain');
+  assert.equal(answer.mode, 'fallback');
+  assert.equal(answer.contact.team, 'pharmacy');
+  assert.match(answer.message, /confidently match/i);
+  assert.match(answer.message, /ask your pharmacist what options exist/i);
+  assert.ok(answer.message.length <= 500);
+  assert.equal(AskReplySchema.safeParse(answer).success, true);
+  assert.equal(AskReplySchema.safeParse({ ...answer, message: 'x'.repeat(501) }).success, false);
 });

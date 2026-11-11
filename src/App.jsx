@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { api } from './api.js';
+import AskRxplain from './AskRxplain.jsx';
 import './styles.css';
 
 const TEAM_NAMES = {
@@ -298,6 +299,7 @@ export default function App() {
           </span>
         </div>
       </footer>
+      <AskRxplain />
     </div>
   );
 }

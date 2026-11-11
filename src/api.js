@@ -14,4 +14,5 @@ export const api = {
   health: () => request('/health'),
   issues: () => request('/issues'),
   explain: (issueId) => request('/explain', { method: 'POST', body: { issueId } }),
+  ask: (message) => request('/ask', { method: 'POST', body: { message } }),
 };

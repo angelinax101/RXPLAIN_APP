@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { aiMode } from '../config.js';
-import { ExplainRequest, explainIssue, listPublicIssues } from '../prescription.js';
+import { AskRequest, ExplainRequest, askRxplain, explainIssue, listPublicIssues } from '../prescription.js';
 
 export const api = Router();
 
@@ -23,5 +23,19 @@ api.post('/explain', async (req, res) => {
     res.json(await explainIssue(parsed.data.issueId));
   } catch {
     res.status(500).json({ error: 'Rxplain could not load this guide. Please try again.' });
+  }
+});
+
+api.post('/ask', async (req, res) => {
+  const parsed = AskRequest.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: 'Enter a brief issue description of 500 characters or fewer. Do not include personal or medication details.' });
+    return;
+  }
+
+  try {
+    res.json(await askRxplain(parsed.data.message));
+  } catch {
+    res.status(500).json({ error: 'Ask Rxplain is unavailable right now. Please use the issue guide above.' });
   }
 });
