@@ -1,7 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import express from 'express';
+import http from 'node:http';
 
 process.env.AI_MODE = 'mock';
+const { api, createAskRateLimiter } = await import('../server/routes/api.js');
 const {
   AskClassificationSchema,
   AskReplySchema,
@@ -84,6 +87,62 @@ test('Ask Rxplain accepts only a short message and rejects extra fields', () => 
   assert.equal(AskRequest.safeParse({ message: 'x'.repeat(501) }).success, false);
   assert.equal(AskRequest.safeParse({ message: '   ' }).success, false);
   assert.equal(AskRequest.safeParse({ message: 'My copay changed.', issueId: 'unexpected-copay' }).success, false);
+});
+
+test('Ask rate limit returns 429 after its burst allowance is used', () => {
+  let now = 0;
+  const limit = createAskRateLimiter({ limit: 2, windowMs: 60_000, now: () => now });
+  for (let i = 0; i < 2; i += 1) {
+    assert.equal(limit({ ip: '192.0.2.10' }), null);
+  }
+
+  const retryAfterSeconds = limit({ ip: '192.0.2.10' });
+  assert.equal(retryAfterSeconds, 30);
+});
+
+test('Ask rate limit refills over time and isolates clients', () => {
+  let now = 0;
+  const limit = createAskRateLimiter({ limit: 1, windowMs: 1_000, now: () => now });
+  assert.equal(limit({ ip: '192.0.2.10' }), null);
+  assert.equal(limit({ ip: '192.0.2.10' }), 1);
+  assert.equal(limit({ ip: '192.0.2.11' }), null);
+
+  now = 1_000;
+  assert.equal(limit({ ip: '192.0.2.10' }), null);
+});
+
+test('Ask API returns a clear 429 response when the client exceeds its allowance', async (t) => {
+  const app = express();
+  app.use(express.json());
+  app.use(api);
+  const server = http.createServer(app);
+  await new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(0, '127.0.0.1', resolve);
+  });
+  t.after(() => new Promise((resolve, reject) => {
+    server.close((error) => error ? reject(error) : resolve());
+  }));
+
+  const { port } = server.address();
+  const url = `http://127.0.0.1:${port}/ask`;
+  for (let i = 0; i < 20; i += 1) {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'My pharmacy says the refill is too soon.' }),
+    });
+    assert.equal(response.status, 200);
+  }
+
+  const limited = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'My pharmacy says the refill is too soon.' }),
+  });
+  assert.equal(limited.status, 429);
+  assert.match((await limited.json()).error, /too many requests/i);
+  assert.ok(Number(limited.headers.get('retry-after')) > 0);
 });
 
 test('routing output schema only allows a confident known issue match', () => {
