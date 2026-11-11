@@ -14,10 +14,7 @@ export const config = {
   temperature: Number(process.env.GEMINI_TEMPERATURE ?? 0.7),
   maxOutputTokens: 600,
   forceMock: process.env.AI_MODE === 'mock',
-
-  // ---- Database (Replit PostgreSQL) ----
-  databaseUrl: process.env.DATABASE_URL || '',
 };
 
-// "live" when a key is set, "mock" otherwise, so the app runs on day one.
+// "live" when a key is set, "fallback" otherwise, so the app works without user data.
 export const aiMode = () => (config.geminiApiKey && !config.forceMock ? 'live' : 'mock');

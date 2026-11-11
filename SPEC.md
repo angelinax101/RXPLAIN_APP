@@ -1,86 +1,62 @@
-# SPEC.md: Our Project Specification
+# Rxplain MVP Specification
 
-> Fill this in with your team **before** your first ticket.
-> Short and specific beats long and vague. Every `TODO` must be gone by the end of day 1.
-> How to use it: see [`docs/SPEC-DRIVEN-DEVELOPMENT.md`](docs/SPEC-DRIVEN-DEVELOPMENT.md).
+## Product statement
 
----
+Rxplain helps insured people understand common prescription access issues by providing plain-language explanations and practical next steps.
 
-## PART A: Sprint rules (set by CodeSquad, don't delete)
+## Problem and user
 
-### A1. Stack
-- React (in `src/`) + Node/Express (in `server/`) + Replit PostgreSQL + Gemini through LangChain.
-- AI calls happen ONLY on the server (`server/ai/model.js`). Never from React.
-- Every agent skill is a folder: `skills/<name>/SKILL.md`, name matches the folder.
+People may be unable to pick up a prescription and may not understand why. Long waits and unclear explanations make it harder to find the right next step.
 
-### A2. Security
-- API keys live in Replit Secrets or `.env`. Never in code, commits, screenshots, or chat.
-- `import 'dotenv/config'` is the first line of every server file that reads settings.
-- Every request is checked with zod `.safeParse()` before the AI or database is used.
-- SQL uses `$1, $2` placeholders. Never glue user text into SQL.
+The example user is Jennifer, an insured patient who cannot pick up a prescription today. She is trying to understand the issue and is using a phone or laptop at home.
 
-### A3. Responsible AI
-- The agent says it is an AI and never poses as a doctor, lawyer, or counselor.
-- The `safety-guardrail` skill stays on. Personal info is removed before the AI sees it.
-- Facts come from the database or a cited source, or the agent says "I don't know".
-- Anything high-stakes gets a path to a real person (phone, website, office).
+## Core journey
 
-### A4. Scope
-- Two weeks. One core user journey. At most 3 must-have features.
-- Live on Replit by demo day, with a backup screen recording.
+1. The user sees the safety disclaimer and selects one of five common issues.
+2. The user requests an explanation.
+3. Rxplain presents an explanation, who to contact first and why, three next steps, and one to three questions.
+4. The user copies or prints the summary, or starts again with another issue.
 
----
+## Must-have behavior
 
-## PART B: Our project (fill this in)
+- Support exactly five issue IDs: refill too soon, prior authorization, non-formulary drug, unexpected copay, and insurance rejection.
+- Use plain language at about a sixth-grade reading level.
+- Return structured data: `explanation`, `contact.team`, `contact.reason`, three `nextSteps`, and one to three `questions`.
+- Always display that AI can be wrong, plans differ, and the answer is general information.
+- Provide a prewritten fallback for every issue if Gemini is unavailable or returns invalid output.
+- Keep the Gemini API key server-side.
+- Send Gemini only the selected issue and its server-side reference notes.
+- Store no user data, issue selections, requests, answers, or conversation history.
+- Provide copy, print, and larger-text controls.
 
-### 1. Team and one-liner
-- **Team name:** TODO
-- **App name:** TODO
-- **One sentence:** We help TODO (who) TODO (do what) so that TODO (result).
+## Privacy and safety rules
 
-### 2. Problem
-- **Problem statement:** TODO
-- **Theme:** TODO (Climate, Education Access, Global Health, Clean Water, Child Protection, other)
-- **Evidence it's real:** TODO (a number, an article, or a conversation with someone affected)
+- No accounts, login, patient profile, or database use.
+- No free-text prompt or file upload. The endpoint rejects request fields beyond the selected issue ID.
+- Never ask for names, prescription numbers, or insurance details.
+- Do not provide medication, treatment, or dosing advice.
+- Do not promise coverage, savings, exceptions, or timelines.
+- Direct users to a pharmacist, prescriber, or insurer for specifics.
+- If someone may run out, direct them to ask a pharmacist what options exist; rules vary by plan and state.
 
-### 3. User
-- **Main user:** TODO (name, age, situation)
-- **What they do today without our app:** TODO
-- **Device and language(s):** TODO
+## Out of scope
 
-### 4. Goals
-| Goal | How we'll measure it | Target |
-|---|---|---|
-| TODO | TODO | TODO |
+- More than five issues
+- Live insurance eligibility checks
+- Medication price comparison
+- Accounts or patient information
+- Prior-authorization submission
+- Free-text user input
+- Translation into other languages, which is not defined in the core journey
 
-### 5. Features
-| Priority | Feature | Ticket | Skill(s) |
-|---|---|---|---|
-| Must | TODO | 004 | TODO |
-| Must | TODO | 005 | TODO |
-| Must | TODO | 006 | TODO |
-| Not now | TODO | n/a | n/a |
+## Technology
 
-### 6. Agent and skills
-- **Agent name and voice:** TODO (update `shared/project.config.js` to match)
-- **Starter skills we keep:** TODO
-- **New skills we'll write:** TODO (name, what it does, when it should be used)
-- **The agent must NEVER:** TODO
+- React, HTML, CSS, and JavaScript
+- Node.js and Express
+- Gemini API, called only from the server
+- JSON issue guides and fallbacks; no database
+- Replit for hosting
 
-### 7. Data
-| Table | What's in it | Where the data comes from | Who keeps it up to date |
-|---|---|---|---|
-| resources | TODO | TODO | TODO |
-| TODO | TODO | TODO | TODO |
+## Done means
 
-### 8. Privacy and governance
-- **Personal info our app could touch:** TODO
-- **How we protect it:** TODO
-- **What we tell users up front:** TODO
-- **Who on the team is responsible:** TODO
-
-### 9. Out of scope (not in these two weeks)
-- TODO
-
-### 10. Open questions
-- TODO
+The user can choose any supported issue, receive a well-formed explanation or safe fallback, identify who to contact, see next steps and questions, and copy or print the result without the app storing their activity.

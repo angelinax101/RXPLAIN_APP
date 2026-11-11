@@ -4,7 +4,6 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
 import { config, aiMode } from './config.js';
-import { setupDatabase } from './db/setup.js';
 import { api } from './routes/api.js';
 
 // =============================================================
@@ -37,13 +36,7 @@ if (config.isProduction) {
   app.use(vite.middlewares);
 }
 
-try {
-  await setupDatabase();
-} catch (err) {
-  console.error('[db] Could not set up Postgres:', err.message);
-}
-
 server.listen(config.port, '0.0.0.0', () => {
-  console.log(`\nCommunity Sprint app running on http://localhost:${config.port}`);
-  console.log(`AI: ${aiMode() === 'live' ? `live (${config.model})` : 'mock mode (add GEMINI_API_KEY for real answers)'}`);
+  console.log(`\nRxplain is running on port ${config.port}`);
+  console.log(`AI: ${aiMode() === 'live' ? `Gemini (${config.model})` : 'prewritten fallback guides'}`);
 });

@@ -12,9 +12,6 @@ async function request(path, options = {}) {
 
 export const api = {
   health: () => request('/health'),
-  skills: () => request('/skills'),
-  chat: (body) => request('/chat', { method: 'POST', body }),
-  resources: ({ search = '', category = '' } = {}) =>
-    request(`/resources?${new URLSearchParams({ search, category })}`),
-  addResource: (body) => request('/resources', { method: 'POST', body }),
+  issues: () => request('/issues'),
+  explain: (issueId) => request('/explain', { method: 'POST', body: { issueId } }),
 };

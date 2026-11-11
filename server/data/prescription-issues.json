@@ -1,0 +1,116 @@
+[
+  {
+    "id": "refill-too-soon",
+    "title": "Refill too soon",
+    "description": "The pharmacy says your plan will not cover the refill yet.",
+    "referenceNotes": "A refill-too-soon rejection means the plan may not yet allow another claim because its timing rule has not been met. Some plans require most of the prior supply to be used (sometimes around 75–80%, but this varies). Early requests can happen for travel, lost medication, or changed directions. Controlled medications may have stricter timing rules. The pharmacy can see the exact message and next refill date; ask the insurer about an early-refill or travel exception; changed directions may require the prescriber to send an updated prescription. If someone may run out, tell them to ask the pharmacist what options exist; rules vary by plan and state. Never advise changing, skipping, or stopping medication.",
+    "fallback": {
+      "explanation": "Your plan may not cover a refill until a certain date. The pharmacy can explain the message and check whether the claim was submitted with the right information.",
+      "contact": {
+        "team": "pharmacy",
+        "reason": "The pharmacy can explain the rejection message and when the plan may allow another claim."
+      },
+      "nextSteps": [
+        "Ask the pharmacy for the exact message and the next date the plan allows a refill.",
+        "Ask whether the plan has an early-refill or travel exception process.",
+        "If you may run out, ask the pharmacist what options exist. If directions changed, ask whether the prescriber needs to send an updated prescription."
+      ],
+      "questions": [
+        "What date will my plan allow this refill?",
+        "Is there an early-refill or travel exception process?",
+        "What options exist if I may run out?"
+      ]
+    }
+  },
+  {
+    "id": "prior-authorization",
+    "title": "Prior authorization",
+    "description": "Your plan may need information from your prescriber before covering it.",
+    "referenceNotes": "A prior authorization means the plan requires information from the prescriber before it decides whether to cover a prescription. Reasons can include cost, plan coverage rules, usage limits, review requirements, or step therapy. The prescriber's office submits the request; the insurer reviews it. A pharmacy usually cannot approve a prior authorization itself, but can confirm what it needs after approval. The prescriber can explain the request; the insurer can provide status and typical review timing. If someone may run out, tell them to ask the pharmacist what options exist; rules vary by plan and state. Never make a coverage guarantee or give medication advice.",
+    "fallback": {
+      "explanation": "Your plan may need information from your prescriber before it decides whether to cover the prescription. The request and review process can vary by plan.",
+      "contact": {
+        "team": "prescriber",
+        "reason": "The prescriber's office submits the request and can check whether it was sent."
+      },
+      "nextSteps": [
+        "Ask the prescriber's office whether it received a prior-authorization request.",
+        "Ask what information the plan still needs from the prescriber's office.",
+        "Contact your insurer to check the request's status and typical review time."
+      ],
+      "questions": [
+        "Has the prior-authorization request been sent to my plan?",
+        "How can I check its status and typical review time?",
+        "If it is denied, how can I ask about a review or appeal?"
+      ]
+    }
+  },
+  {
+    "id": "non-formulary",
+    "title": "Non-formulary drug",
+    "description": "The prescription may not be on your plan's covered-drug list.",
+    "referenceNotes": "A plan's formulary is its list of covered or preferred prescriptions. A non-formulary message can mean the prescription is not included or is in a higher cost tier. A plan may prefer a generic or another prescription, and its list can change after a plan change or new plan year. Ask the pharmacy to confirm the exact rejection reason and the insurer about coverage, cost tier, and any exception process. Only the prescriber can discuss whether another treatment is appropriate. Never suggest which medication to switch to. If someone may run out, tell them to ask the pharmacist what options exist; rules vary by plan and state.",
+    "fallback": {
+      "explanation": "Your plan may not list this prescription as covered or preferred. The insurer can explain the plan's rules and any review options.",
+      "contact": {
+        "team": "pharmacy",
+        "reason": "The pharmacy can confirm whether the exact claim rejection says the prescription is not covered."
+      },
+      "nextSteps": [
+        "Ask the pharmacy to confirm the exact reason the claim was rejected.",
+        "Ask your insurer about the coverage list, cost tier, and any exception process.",
+        "If you are considering a treatment change, speak with your prescriber."
+      ],
+      "questions": [
+        "Is this prescription excluded or in a higher cost tier?",
+        "Is there a formulary exception process?"
+      ]
+    }
+  },
+  {
+    "id": "unexpected-copay",
+    "title": "Unexpected copay",
+    "description": "The amount you are asked to pay is different than expected.",
+    "referenceNotes": "An unexpected copay means a claim was approved but the person's share is higher than expected. It can relate to a deductible, cost tier, coinsurance, whether a pharmacy is preferred or in-network, or whether a generic or brand prescription was processed. Ask the pharmacy for an itemized breakdown of the claim and ask the insurer to explain plan benefits. A prescriber can discuss whether any other option is appropriate, but Rxplain must not recommend a medication change. Discount cards and manufacturer coupons have rules and may not combine with some coverage; tell users to ask the pharmacy or insurer and do not state what is allowed. If someone may run out, tell them to ask the pharmacist what options exist; rules vary by plan and state. Do not estimate prices or promise savings.",
+    "fallback": {
+      "explanation": "The amount may depend on your plan's benefits and how the pharmacy claim was processed. Your insurer can explain the plan calculation, and the pharmacy can check the claim details.",
+      "contact": {
+        "team": "pharmacy",
+        "reason": "The pharmacy can provide an itemized breakdown of what was billed and how the claim was processed."
+      },
+      "nextSteps": [
+        "Ask the pharmacy for an itemized breakdown of the amount and claim.",
+        "Ask your insurer how your deductible, cost tier, or coinsurance affected the amount.",
+        "Ask whether the pharmacy is preferred or in-network. For treatment options, speak with your prescriber."
+      ],
+      "questions": [
+        "What was billed, and why is my share this amount?",
+        "Have I met my deductible, and is this a preferred pharmacy?",
+        "Are there restrictions on any discount or coupon I could use?"
+      ]
+    }
+  },
+  {
+    "id": "insurance-rejection",
+    "title": "Insurance rejection",
+    "description": "The plan did not approve the pharmacy claim as submitted.",
+    "referenceNotes": "An insurance rejection means the pharmacy claim did not process. Possible causes include outdated or incorrect information on file, a coverage start or end date, a quantity limit, or a pharmacy network rule. The pharmacy can read the exact rejection message and check its records; the insurer can confirm active coverage and plan limits; the prescriber may need to clarify a request. If coverage may have ended, the insurer can explain next contacts such as a plan sponsor or marketplace. If someone may run out, tell them to ask the pharmacist what options exist; rules vary by plan and state. Do not guess the cause or provide medication advice.",
+    "fallback": {
+      "explanation": "A rejection means the plan did not approve the claim as it was sent. There can be different reasons, so the exact message is important.",
+      "contact": {
+        "team": "pharmacy",
+        "reason": "The pharmacy can explain the rejection message and tell you which organization can clarify it."
+      },
+      "nextSteps": [
+        "Ask the pharmacy for the exact rejection message in plain language.",
+        "Contact your insurer to ask what the message means under your plan.",
+        "If the insurer says information is needed from the prescriber, ask the prescriber's office about the next step."
+      ],
+      "questions": [
+        "What does this rejection message mean?",
+        "Is my coverage active, and is this pharmacy in my plan's network?",
+        "Who needs to take the next step?"
+      ]
+    }
+  }
+]
